@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bukiet dla Ciebie 🌹</title>
+    <title>Quiz dla Ciebie ❤️</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
         
         * {
             margin: 0;
@@ -14,133 +14,29 @@
         }
         
         body {
-            font-family: 'Dancing Script', cursive;
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-        }
-        
-        .container {
-            text-align: center;
             padding: 20px;
         }
         
-        h1 {
-            color: #d63447;
-            font-size: 42px;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        .subtitle {
-            color: #666;
-            font-size: 24px;
-            margin-bottom: 40px;
-        }
-        
-        .vase {
-            position: relative;
-            width: 300px;
-            height: 400px;
-            margin: 0 auto;
-        }
-        
-        .flower {
-            position: absolute;
-            font-size: 60px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            opacity: 0;
-            transform: translateY(100px) scale(0);
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            pointer-events: none;
-        }
-        
-        .flower.show {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-            pointer-events: auto;
-        }
-        
-        .flower.collected {
-            animation: collectAnimation 0.6s forwards;
-            pointer-events: none;
-        }
-        
-        @keyframes collectAnimation {
-            0% {
-                transform: scale(1) rotate(0deg);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.5) rotate(180deg);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(0) rotate(360deg);
-                opacity: 0;
-            }
-        }
-        
-        .flower:not(.collected):hover {
-            transform: translateY(-10px) scale(1.2);
-            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3));
-        }
-        
-        .message {
-            margin-top: 40px;
-            font-size: 28px;
-            color: #d63447;
-            min-height: 40px;
-            animation: fadeIn 1s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #d63447 0%, #ff6b9d 100%);
-            color: white;
-            border: none;
-            padding: 15px 40px;
-            border-radius: 30px;
-            font-size: 24px;
-            font-family: 'Dancing Script', cursive;
-            cursor: pointer;
-            margin-top: 30px;
-            transition: transform 0.3s;
-            box-shadow: 0 5px 15px rgba(214, 52, 71, 0.4);
-        }
-        
-        .btn:hover {
-            transform: scale(1.1);
-        }
-        
-        .hidden {
-            display: none;
-        }
-        
-        .final-msg {
+        .container {
+            background: white;
+            border-radius: 25px;
+            padding: 40px 30px;
             max-width: 500px;
-            margin: 40px auto;
-            background: rgba(255,255,255,0.9);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            animation: slideUp 0.5s;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideIn 0.5s ease;
         }
         
-        @keyframes slideUp {
+        @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(-30px);
             }
             to {
                 opacity: 1;
@@ -148,147 +44,203 @@
             }
         }
         
-        .progress {
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+        }
+        
+        .question h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .option {
+            background: #f5f5f5;
+            padding: 15px 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background: #e8e8ff;
+            transform: translateX(5px);
+        }
+        
+        .option.selected {
+            background: #667eea;
+            color: white;
+            border-color: #764ba2;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
             margin-top: 20px;
-            font-size: 20px;
-            color: #d63447;
-            font-weight: bold;
+            transition: transform 0.3s;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .result {
+            display: none;
+            text-align: center;
+        }
+        
+        .result h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        
+        .result p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .heart {
+            display: inline-block;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
         }
         
         @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
             h1 {
-                font-size: 32px;
+                font-size: 24px;
             }
             
-            .subtitle {
-                font-size: 20px;
-            }
-            
-            .vase {
-                width: 250px;
-                height: 350px;
-            }
-            
-            .flower {
-                font-size: 50px;
+            .question h3 {
+                font-size: 16px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="intro">
-            <h1>Bukiet dla Ciebie 🌹</h1>
-            <p class="subtitle">Kliknij kwiatki aby je zebrać...</p>
-            <div class="progress" id="progress">0 / 5 kwiatków</div>
-            <div class="vase" id="vase"></div>
-            <div class="message" id="message"></div>
-            <button class="btn hidden" id="finishBtn" onclick="showFinal()">Zobacz wiadomość 💌</button>
+        <div id="quiz">
+            <h1>Quiz dla Ciebie <span class="heart">❤️</span></h1>
+            <p class="subtitle">Sprawdźmy jak dobrze mnie znasz...</p>
+            
+            <div class="question">
+                <h3>1. Bardzo ważna data mojego życia.</h3>
+                <div class="options">
+                    <div class="option" data-question="1" data-answer="b">A) 03.12.2023</div>
+                    <div class="option" data-question="1" data-answer="b">B) 1.12.2024</div>
+                    <div class="option" data-question="1" data-answer="b">C) 03.03.2023</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <h3>2. Co lubię robić w wolnym czasie?</h3>
+                <div class="options">
+                    <div class="option" data-question="2" data-answer="a">A) Spać</div>
+                    <div class="option" data-question="2" data-answer="a">B) Oglądać</div>
+                    <div class="option" data-question="2" data-answer="a">C) Pisać z tobą</div>
+                </div>
+            </div>
+            
+            <div class="question">
+                <h3>3. Kocham cię?</h3>
+                <div class="options">
+                    <div class="option" data-question="3" data-answer="c">A) Tak, kurwa głuptasie myślałaś że istnieje inna odpowiedź ?</div>
+                </div>
+            </div>
+            
+            <button class="btn" onclick="checkAnswers()">Sprawdź wynik! 💕</button>
         </div>
         
-        <div class="final-msg hidden" id="finalMsg">
-            <h1>💐 Dla Ciebie 💐</h1>
-            <p style="font-size: 22px; color: #666; line-height: 1.6; margin-top: 20px;">
-                Każdy kwiatek to powód, dla którego Cię kocham:<br><br>
-                🌹 Bo jesteś najpiękniejsza<br>
-                🌸 Bo zawsze mnie wspierasz<br>
-                🌺 Bo Twój uśmiech rozświetla mój dzień<br>
-                🌻 Bo jesteś moim słońcem<br>
-                🌷 Bo z Tobą wszystko ma sens<br><br>
-                <strong style="color: #d63447; font-size: 28px;">Kocham Cię całym sercem! ❤️</strong>
-            </p>
+        <div class="result" id="result">
+            <h2>Wynik: <span id="score"></span>/3 ❤️</h2>
+            <p id="message"></p>
+            <button class="btn" onclick="location.reload()">Spróbuj ponownie</button>
         </div>
     </div>
     
     <script>
-        const flowers = ['🌹', '🌸', '🌺', '🌻', '🌷'];
-        let collected = 0;
-        let flowersCreated = [];
+        let answers = {};
         
-        function createFlower(index) {
-            setTimeout(() => {
-                const vase = document.getElementById('vase');
-                const flower = document.createElement('div');
-                flower.className = 'flower';
-                flower.textContent = flowers[index];
-                flower.setAttribute('data-id', index);
+        const correctAnswers = {
+            1: 'a', // Niebieski
+            2: 'c', // Czytać książki
+            3: 'a'  // Jesień
+        };
+        
+        document.querySelectorAll('.option').forEach(option => {
+            option.addEventListener('click', function() {
+                const question = this.dataset.question;
+                const answer = this.textContent.charAt(0).toLowerCase();
                 
-                const positions = [
-                    {left: '50%', top: '60%', transform: 'translateX(-50%)'},
-                    {left: '20%', top: '40%'},
-                    {right: '20%', top: '40%'},
-                    {left: '30%', top: '20%'},
-                    {right: '30%', top: '20%'}
-                ];
-                
-                const pos = positions[index];
-                Object.assign(flower.style, pos);
-                
-                // ✅ Używamy addEventListener zamiast onclick
-                flower.addEventListener('click', function collectFlower(e) {
-                    e.stopPropagation();
-                    
-                    // ✅ Sprawdź czy już został zebrany
-                    if(this.classList.contains('collected')) return;
-                    
-                    // ✅ Oznacz jako zebrany
-                    this.classList.add('collected');
-                    
-                    // ✅ Usuń event listener
-                    this.removeEventListener('click', collectFlower);
-                    
-                    collected++;
-                    updateProgress();
-                    
-                    if(collected === 5) {
-                        setTimeout(() => {
-                            document.getElementById('finishBtn').classList.remove('hidden');
-                            document.getElementById('message').textContent = 
-                                'Wszystkie kwiatki zebrane! 🎉';
-                        }, 600);
-                    }
-                    
-                    // ✅ Usuń element po animacji
-                    setTimeout(() => {
-                        if(this.parentNode) {
-                            this.remove();
-                        }
-                    }, 600);
+                document.querySelectorAll(`[data-question="${question}"]`).forEach(opt => {
+                    opt.classList.remove('selected');
                 });
                 
-                vase.appendChild(flower);
-                flowersCreated.push(flower);
-                
-                setTimeout(() => {
-                    flower.classList.add('show');
-                }, 100);
-                
-            }, index * 500);
-        }
+                this.classList.add('selected');
+                answers[question] = answer;
+            });
+        });
         
-        function updateProgress() {
-            document.getElementById('progress').textContent = `${collected} / 5 kwiatków`;
+        function checkAnswers() {
+            if(Object.keys(answers).length < 3) {
+                alert('Odpowiedz na wszystkie pytania! 😊');
+                return;
+            }
             
-            const messages = [
-                '',
-                'Świetnie! Dalej! 💕',
-                'Połowa za Tobą! 🌸',
-                'Już prawie! 🌺',
-                'Ostatni! 🌻',
-                'Wszystkie! 🎉'
-            ];
+            let score = 0;
+            for(let q in correctAnswers) {
+                if(answers[q] === correctAnswers[q]) score++;
+            }
             
-            document.getElementById('message').textContent = messages[collected];
-        }
-        
-        // ✅ Stwórz wszystkie kwiatki
-        for(let i = 0; i < 5; i++) {
-            createFlower(i);
-        }
-        
-        function showFinal() {
-            document.getElementById('intro').classList.add('hidden');
-            document.getElementById('finalMsg').classList.remove('hidden');
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('score').textContent = score;
+            
+            const messages = {
+                3: 'Wiedziałem, że dasz radę! Kocham Cię najbardziej na świecie! ❤️',
+                2: 'Taka właśnie jesteś Pff. Nie no misia KOCHAM CIĘ TAK CZY SIAK',
+                1: 'Lepszy ryc niż nic xddd. Żartuję przecież myszko. Kocham cie w chujjjjj ❤️',
+                0: 'Ajj tam jakieś punkty, ważne to że się kochamy! ❤️'
+            };
+            
+            document.getElementById('message').textContent = messages[score];
         }
     </script>
 </body>
