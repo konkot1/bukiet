@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>100 powodów 💕</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Lato:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lato', sans-serif;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-family: 'Caveat', cursive;
+            color: #d63447;
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        
+        .reasons-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .reason-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+            border-radius: 15px;
+            border-left: 4px solid #d63447;
+            animation: slideIn 0.5s;
+            transition: all 0.3s;
+        }
+        
+        .reason-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 15px rgba(214, 52, 71, 0.3);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .reason-number {
+            font-family: 'Caveat', cursive;
+            font-size: 28px;
+            font-weight: bold;
+            color: #d63447;
+            min-width: 50px;
+            margin-right: 15px;
+        }
+        
+        .reason-text {
+            color: #333;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+        
+        .counter {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+            color: #d63447;
+            font-weight: bold;
+        }
+        
+        .reveal-btn {
+            display: block;
+            margin: 20px auto;
+            background: linear-gradient(135deg, #d63447 0%, #ff6b9d 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .reveal-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .final-message {
+            display: none;
+            text-align: center;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeIn 0.5s;
+        }
+        
+        .final-message h2 {
+            font-family: 'Caveat', cursive;
+            color: #d63447;
+            font-size: 42px;
+            margin-bottom: 20px;
+        }
+        
+        .final-message p {
+            color: #666;
+            font-size: 20px;
+            line-height: 1.8;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .reasons-container {
+                padding: 20px;
+                max-height: 500px;
+            }
+            
+            .reason-item {
+                padding: 12px;
+            }
+            
+            .reason-number {
+                font-size: 24px;
+                min-width: 40px;
+            }
+            
+            .reason-text {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>💕 100 powodów dlaczego Cię kocham 💕</h1>
+        <p class="subtitle">Kliknij "Pokaż więcej" aby odkryć kolejne powody...</p>
+        
+        <div class="reasons-container" id="reasonsContainer"></div>
+        
+        <button class="reveal-btn" id="revealBtn" onclick="revealMore()">
+            Pokaż więcej ❤️
+        </button>
+        
+        <div class="counter" id="counter">Odkryto: 0 / 25</div>
+        
+        <div class="final-message" id="finalMessage">
+            <h2>💖 To dopiero początek! 💖</h2>
+            <p>
+                Mogłbym wymieniać powody całą wieczność...<br><br>
+                
+                Ale prawda jest taka, że nie potrzebuję<br>
+                100 powodów aby Cię kochać.<br><br>
+                
+                <strong style="color: #d63447; font-size: 28px;">
+                    Wystarczy jeden - TO TY ❤️
+                </strong>
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        const reasons = [
+            "Bo Twój uśmiech sprawia że ja się cieszę",
+            "Bo zawsze wiesz co powiedzieć",
+            "Bo jesteś najpiękniejsza 😍",
+            "Bo Twój śmiech jest zaraźliwy małpo",
+            "Bo wspierasz mnie w każdej sytuacji",
+            "Bo jesteś mądrą kobietą 🧠",
+            "Bo masz najpiękniejsze oczy 👀",
+            "Bo Twoje przytulania są najlepsze 🤗",
+            "Bo jesteś moją najlepszą przyjaciółką 👫",
+            "Bo rozumiesz mnie jak nikt inny 💭",
+            "Bo jesteś wytrwała w miłości do mnie ❤️",
+            "Bo jesteś Dobra dla każdego niezależnie co ci zrobił",
+            "Bo jesteś zabawna 😂",
+            "Bo potrafisz mnie uspokoić 😌",
+            "Bo jesteś wyrozumiała",
+            "Bo tak. XD Żartuje. BO CIĘ",
+            "Bo kochasz zwierzaki (nawet mnie) 🐶",
+            "Bo jesteś kreatywna 🎨",
+            "Bo masz wielkie serce ❤️",
+            "Bo z Tobą wszystko ma sens 🌟",
+        ];
+        
+        let revealed = 0;
+        
+        function revealMore() {
+            const container = document.getElementById('reasonsContainer');
+            const toReveal = Math.min(5, reasons.length - revealed);
+            
+            for(let i = 0; i < toReveal; i++) {
+                const item = document.createElement('div');
+                item.className = 'reason-item';
+                item.style.animationDelay = `${i * 0.1}s`;
+                
+                item.innerHTML = `
+                    <div class="reason-number">${revealed + 1}.</div>
+                    <div class="reason-text">${reasons[revealed]}</div>
+                `;
+                
+                container.appendChild(item);
+                revealed++;
+            }
+            
+            document.getElementById('counter').textContent = 
+                `Odkryto: ${revealed} / ${reasons.length}`;
+            
+            container.scrollTop = container.scrollHeight;
+            
+            if(revealed >= reasons.length) {
+                document.getElementById('revealBtn').style.display = 'none';
+                setTimeout(() => {
+                    document.querySelector('.reasons-container').style.display = 'none';
+                    document.querySelector('.counter').style.display = 'none';
+                    document.getElementById('finalMessage').style.display = 'block';
+                }, 5000);
+            }
+        }
+        
+        // Pokaż pierwsze 5
+        revealMore();
+    </script>
+</body>
+</html>
