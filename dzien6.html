@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nasze miejsca 📍</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Satisfy&family=Open+Sans:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-family: 'Satisfy', cursive;
+            color: white;
+            text-align: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            color: white;
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        
+        .map {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            min-height: 500px;
+        }
+        
+        .pin {
+            position: absolute;
+            font-size: 40px;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .pin:hover {
+            transform: scale(1.3) translateY(-5px);
+            filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
+        }
+        
+        .pin-1 { top: 15%; left: 25%; animation-delay: 0s; }
+        .pin-2 { top: 35%; right: 20%; animation-delay: 0.3s; }
+        .pin-3 { top: 55%; left: 30%; animation-delay: 0.6s; }
+        .pin-4 { bottom: 25%; right: 25%; animation-delay: 0.9s; }
+        .pin-5 { top: 25%; left: 55%; animation-delay: 1.2s; }
+        
+        .tooltip {
+            display: none;
+            position: absolute;
+            background: #11998e;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            white-space: nowrap;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid #11998e;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .modal.show {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            animation: slideUp 0.4s;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .modal-emoji {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .modal h2 {
+            color: #11998e;
+            margin-bottom: 20px;
+            font-size: 28px;
+            font-family: 'Satisfy', cursive;
+        }
+        
+        .modal p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 16px;
+            margin-bottom: 30px;
+        }
+        
+        .close-btn {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .close-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .counter {
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 36px;
+            }
+            
+            .map {
+                padding: 20px;
+                min-height: 400px;
+            }
+            
+            .pin {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📍 Nasze Miejsca 💕</h1>
+        <p class="subtitle">Kliknij pinezki aby odkryć nasze wspomnienia...</p>
+        
+        <div class="map">
+            <div class="pin pin-1" onclick="showPlace(0)">📍</div>
+            <div class="pin pin-2" onclick="showPlace(1)">📍</div>
+            <div class="pin pin-3" onclick="showPlace(2)">📍</div>
+            <div class="pin pin-4" onclick="showPlace(3)">📍</div>
+            
+            <div style="text-align: center; padding: 180px 20px; color: #ccc;">
+                <p style="font-size: 80px; margin-bottom: 20px;">🗺️</p>
+                <p style="font-size: 18px;">Mapa naszych wspomnień</p>
+            </div>
+        </div>
+        
+        <div class="counter" id="counter">Odkryto: 0 / 4 miejsc</div>
+    </div>
+    
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-emoji" id="modalEmoji"></div>
+            <h2 id="modalTitle"></h2>
+            <p id="modalText"></p>
+            <button class="close-btn" onclick="closeModal()">Zamknij ❤️</button>
+        </div>
+    </div>
+    
+    <script>
+        const places = [
+            {
+                emoji: '🏖',
+                title: 'Nasze miejsce',
+                text: 'Najwięcej spotkań, z czego początek najważniejszego dnia mojego życia... Plaża w pomysku ❤️',
+                visited: false
+            },
+            {
+                emoji: '🎬',
+                title: 'Kino',
+                text: 'Ostatnio zwierzogród. Był też minecraft. Razem ale nie do końca Dzieciak98 no i słupsk ❤️',
+                visited: false
+            },
+            {
+                emoji: '🏠',
+                title: 'Wiata',
+                text: 'Wydaje się głupie, ale było tam dużo rozmów, śmiechu, może i łez. Pomimo tego wszystkiego, wytrwaliśmy w tym razem kochanie... KOCHAM CIĘ KURWA MAŁPO TY MOJA ❤️',
+                visited: false
+            },
+            {
+                emoji: '🛏',
+                title: 'Łoże o boże',
+                text: 'No co mogę powiedzieć ? Najwięcej czasu tam spędziliśmy i no miejsce naszych najczęstrzych spotkań. ❤️',
+                visited: false
+            }
+        ];
+        
+        let discovered = 0;
+        
+        function showPlace(index) {
+            const place = places[index];
+            
+            if(!place.visited) {
+                place.visited = true;
+                discovered++;
+                updateCounter();
+            }
+            
+            document.getElementById('modalEmoji').textContent = place.emoji;
+            document.getElementById('modalTitle').textContent = place.title;
+            document.getElementById('modalText').textContent = place.text;
+            document.getElementById('modal').classList.add('show');
+        }
+        
+        function closeModal() {
+            document.getElementById('modal').classList.remove('show');
+        }
+        
+        function updateCounter() {
+            document.getElementById('counter').textContent = 
+                `Odkryto: ${discovered} / 4 miejsc`;
+            
+            if(discovered === 4) {
+                setTimeout(() => {
+                    alert('🎉 Odkryłaś wszystkie nasze miejsca! Każde z nich jest pełne pięknych wspomnień z Tobą ❤️');
+                }, 500);
+            }
+        }
+        
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if(e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
