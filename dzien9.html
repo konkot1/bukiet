@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masz paczkę! 📦</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 390px;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .notification {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            animation: slideDown 0.6s ease-out;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .notification-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-right: 15px;
+        }
+        
+        .notification-title {
+            flex: 1;
+        }
+        
+        .notification-title h3 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+        
+        .notification-title p {
+            color: #999;
+            font-size: 13px;
+        }
+        
+        .notification-body {
+            color: #666;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .accept-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .accept-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .package-wrapper {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .package-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            cursor: pointer;
+        }
+        
+        .package {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: packageFloat 3s infinite;
+        }
+        
+        @keyframes packageFloat {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0px);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateY(-15px);
+            }
+        }
+        
+        .package-box {
+            width: 140px;
+            height: 120px;
+            background: linear-gradient(135deg, #8B4513 0%, #654321 100%);
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .package-tape-v {
+            position: absolute;
+            width: 25px;
+            height: 100%;
+            background: #FFD700;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        .package-tape-h {
+            position: absolute;
+            width: 100%;
+            height: 25px;
+            background: #FFD700;
+            top: 50%;
+            transform: translateY(-50%);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        .package-label {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 10px;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .delivery-text {
+            color: white;
+            font-size: 20px;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .tracking-info {
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 25px;
+            color: white;
+        }
+        
+        .tracking-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        
+        .tracking-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .tracking-label {
+            opacity: 0.8;
+        }
+        
+        .tracking-value {
+            font-weight: 600;
+        }
+        
+        .letter-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            animation: fadeIn 0.3s;
+        }
+        
+        .letter-modal.show {
+            display: flex;
+        }
+        
+        .letter-content {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            max-width: 390px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            text-align: center;
+            animation: slideUp 0.5s;
+            position: relative;
+        }
+        
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .letter-content h1 {
+            font-family: 'Great Vibes', cursive;
+            color: #c94b7e;
+            font-size: 42px;
+            margin-bottom: 25px;
+        }
+        
+        .letter-content p {
+            color: #666;
+            line-height: 2;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        .close-letter-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+        
+        .close-letter-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .hearts {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: floatHeart 3s infinite;
+            opacity: 0;
+        }
+        
+        @keyframes floatHeart {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: translateY(-100px) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-200px) scale(0);
+            }
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: sparkleAnim 1.5s infinite;
+        }
+        
+        @keyframes sparkleAnim {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="notification" id="notification">
+            <div class="notification-header">
+                <div class="notification-icon">📦</div>
+                <div class="notification-title">
+                    <h3>Nowa przesyłka</h3>
+                    <p>Właśnie teraz</p>
+                </div>
+            </div>
+            <div class="notification-body">
+                Otrzymałaś paczkę od ************* 💕<br>
+                Kliknij poniżej aby odebrać przesyłkę.
+            </div>
+            <button class="accept-btn" onclick="acceptDelivery()">
+                Odbierz paczkę 💌
+            </button>
+        </div>
+        
+        <div class="package-wrapper" id="packageWrapper">
+            <div class="delivery-text">
+                📬 Twoja paczka jest gotowa!
+            </div>
+            
+            <div class="tracking-info">
+                <div class="tracking-row">
+                    <span class="tracking-label">Status:</span>
+                    <span class="tracking-value">Dostarczona ✅</span>
+                </div>
+                <div class="tracking-row">
+                    <span class="tracking-label">Nadawca:</span>
+                    <span class="tracking-value">Ktoś kto Cię kocha ❤️</span>
+                </div>
+                <div class="tracking-row">
+                    <span class="tracking-label">Zawartość:</span>
+                    <span class="tracking-value">Ściśle tajne 💕</span>
+                </div>
+            </div>
+            
+            <div class="package-container" onclick="openPackage()">
+                <div class="package">
+                    <div class="package-box">
+                        <div class="package-tape-v"></div>
+                        <div class="package-tape-h"></div>
+                        <div class="package-label">FRAGILE<br>♥</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="delivery-text" style="font-size: 16px;">
+                👆 Kliknij aby otworzyć
+            </div>
+        </div>
+    </div>
+    
+    <div class="letter-modal" id="letterModal">
+        <div class="letter-content">
+            <h1>Dla Ciebie 💕</h1>
+            <p>
+                Kochanie,<br><br>
+                
+                Każdy dzień z Tobą to prezent. ❤️<br><br>
+                
+                Dziękuję za to, że jesteś pomimo moich zachowań.<br>
+                Za każdego buziaka, każde słowo,<br>
+                każdą chwilę spędzoną razem.<br><br>
+                
+                Nie potrzebuję specjalnych okazji,<br>
+                aby powiedzieć Ci jak bardzo Cię kocham.<br><br>
+                
+                <strong style="color: #c94b7e; font-size: 22px;">
+                    Kocham Cieeeeeeeeeeeeeee! 💖
+                </strong>
+            </p>
+            <button class="close-letter-btn" onclick="closeModal()">
+                Zamknij 💕
+            </button>
+        </div>
+    </div>
+    
+    <div class="hearts" id="hearts"></div>
+    
+    <script>
+        function acceptDelivery() {
+            document.getElementById('notification').style.display = 'none';
+            document.getElementById('packageWrapper').style.display = 'block';
+            createSparkles();
+        }
+        
+        function openPackage() {
+            document.getElementById('letterModal').classList.add('show');
+            createHearts();
+        }
+        
+        function closeModal() {
+            document.getElementById('letterModal').classList.remove('show');
+        }
+        
+        function createHearts() {
+            const heartsContainer = document.getElementById('hearts');
+            const heartEmojis = ['❤️', '💕', '💖', '💗', '💓', '💝'];
+            
+            const heartInterval = setInterval(() => {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.animationDuration = (2 + Math.random() * 2) + 's';
+                
+                heartsContainer.appendChild(heart);
+                
+                setTimeout(() => {
+                    heart.remove();
+                }, 3000);
+            }, 300);
+        }
+        
+        function createSparkles() {
+            const packageBox = document.querySelector('.package-box');
+            
+            setInterval(() => {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 1 + 's';
+                
+                packageBox.appendChild(sparkle);
+                
+                setTimeout(() => {
+                    sparkle.remove();
+                }, 1500);
+            }, 500);
+        }
+    </script>
+</body>
+</html>
