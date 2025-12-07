@@ -96,7 +96,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -116,7 +116,7 @@
             width: 100%;
             text-align: center;
             animation: slideUp 0.4s;
-            max-height: 80vh;
+            max-height: 90vh;
             overflow-y: auto;
         }
         
@@ -129,6 +129,11 @@
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         .modal-emoji {
@@ -146,7 +151,17 @@
             color: #666;
             line-height: 1.8;
             font-size: 16px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            object-fit: cover;
         }
         
         .close-btn {
@@ -159,6 +174,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s;
+            margin-top: 20px;
         }
         
         .close-btn:hover {
@@ -177,6 +193,10 @@
             .modal-content {
                 padding: 30px 20px;
             }
+            
+            .modal-image {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -194,6 +214,7 @@
         <div class="modal-content">
             <div class="modal-emoji" id="modalEmoji"></div>
             <h2 id="modalTitle"></h2>
+            <img id="modalImage" class="modal-image" style="display:none;" alt="Wspomnienie">
             <p id="modalText"></p>
             <button class="close-btn" onclick="closeModal()">Zamknij ❤️</button>
         </div>
@@ -203,40 +224,46 @@
         const memories = [
             {
                 day: 1,
-                emoji: '🎉',
-                title: 'Pierwszy dzień',
-                text: 'Pamiętam jak pierwszy raz Cię zobaczyłem... Wiedziałem od razu, że jesteś wyjątkowa. ❤️'
+                emoji: '💑',
+                title: 'Bardzo ważny dzień.',
+                text: 'Pierwsze wspólne wakacje i zarazem najważniejszy dzień mojego życia. Dzień w którym zadałem pytani "Czy zostaniesz moją dziewczyną ?". Kocham Cię najmocniej na świecie! ❤️',
+                image: 'https://konkot1.github.io/bukiet/IMG_E7460.JPG'  // ✅ Zamień na swoje zdjęcie 6
             },
             {
                 day: 2,
-                emoji: '💬',
-                title: 'Pierwsza rozmowa',
-                text: 'Nasza pierwsza długa rozmowa... Mogłem z Tobą rozmawiać w nieskończoność. 💕'
+                emoji: '🎉',
+                title: 'Jedno z pierwszych spotkań',
+                text: 'Dalej pamiętam stres, że nie spodobam ci się. ❤️',
+                image: 'https://konkot1.github.io/bukiet/IMG_E7461.JPG'  // ✅ Twoje zdjęcie 1
             },
             {
                 day: 3,
-                emoji: '🌟',
-                title: 'Pierwsze randka',
-                text: 'Najlepsza randka w moim życiu. Czas z Tobą zawsze mija za szybko! 😊'
+                emoji: '🛶',
+                title: 'Pierwsze aktywności',
+                text: 'Pierwszy wypad z twoją rodziną na kajaki. Jak to mówią. Jak związek przeżyje kajaki to przeżyje już wszystko 💕',
+                image: 'https://konkot1.github.io/bukiet/IMG_E7462.JPG'  // ✅ Zamień na swoje zdjęcie 2
             },
             {
                 day: 4,
-                emoji: '❤️',
-                title: 'Pierwsze "Kocham Cię"',
-                text: 'Kiedy po raz pierwszy powiedziałem Ci "Kocham Cię" - najpiękniejszy moment. 🥰'
+                emoji: '❄️',
+                title: 'Pierwsza zima razem',
+                text: 'Pierwsza zima razem. No co mogę powiedzieć ? Nic sie nie zmieniło dalej bym cię wpierdolił w śnieg. Aleeee tak z miłości oczywiście❤️',
+                image: 'https://konkot1.github.io/bukiet/IMG_E7464.JPG'  // ✅ Zamień na swoje zdjęcie 4
             },
             {
                 day: 5,
-                emoji: '🎵',
-                title: 'Nasza piosenka',
-                text: 'Pamiętasz jak tańczyliśmy do naszej piosenki? Chcę tak tańczyć z Tobą całe życie. 💃'
+                emoji: '🛏🌃',
+                title: 'Pierwsza nocka u ciebie',
+                text: 'Co mogę więcej powiedzieć ? NAJLEPSZA NOC MOJEGO ŻYCIA OBOK UKOCHANEJ OSOBY 😍',
+                image: 'https://konkot1.github.io/bukiet/IMG_E7463.JPG'  // ✅ Zamień na swoje zdjęcie 3
             },
             {
                 day: 6,
-                emoji: '🌅',
-                title: 'Wspólny wschód słońca',
-                text: 'Oglądanie wschodu słońca z Tobą... Ale Ty byłaś piękniejsza niż ten widok. ☀️'
-            }
+                emoji: '🎵',
+                title: 'Unc unc',
+                text: 'No w sumie to pierwsza impreza razem. Dalej pamiętam jak tańczyliśmy i jak onieśmielałaś mnie swoim wyglądem... Kocham Cię najmocniej na świecie! ❤️',
+                image: 'https://konkot1.github.io/bukiet/IMG_E7465.JPG'  // ✅ Zamień na swoje zdjęcie 5
+            },
         ];
         
         const calendar = document.getElementById('calendar');
@@ -257,6 +284,15 @@
             document.getElementById('modalEmoji').textContent = memory.emoji;
             document.getElementById('modalTitle').textContent = memory.title;
             document.getElementById('modalText').textContent = memory.text;
+            
+            const imgElement = document.getElementById('modalImage');
+            if(memory.image) {
+                imgElement.src = memory.image;
+                imgElement.style.display = 'block';
+            } else {
+                imgElement.style.display = 'none';
+            }
+            
             document.getElementById('modal').classList.add('show');
         }
         
