@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ułóż nasze puzzle 🧩</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            color: #f5576c;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .puzzle-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin: 30px auto;
+            max-width: 350px;
+            background: #f0f0f0;
+            padding: 5px;
+            border-radius: 15px;
+        }
+        
+        .puzzle-piece {
+            aspect-ratio: 1;
+            background-size: 300%;
+            background-position: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .puzzle-piece:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .puzzle-piece.correct {
+            border-color: #4CAF50;
+            animation: success 0.5s;
+        }
+        
+        @keyframes success {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .moves {
+            font-size: 20px;
+            color: #f5576c;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+            font-family: 'Fredoka', sans-serif;
+            margin-top: 20px;
+        }
+        
+        .btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .completion-msg {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .completion-msg h2 {
+            color: #4CAF50;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .completion-msg p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 18px;
+        }
+        
+        .final-image {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .puzzle-grid {
+                max-width: 280px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="gameArea">
+            <h1>🧩 Ułóż nasze puzzle 💕</h1>
+            <p class="subtitle">Kliknij na puzzle aby je zamienić miejscami</p>
+            <div class="moves" id="moves">Ruchy: 0</div>
+            
+            <div class="puzzle-grid" id="puzzleGrid"></div>
+            
+            <button class="btn" onclick="shufflePuzzle()">Wymieszaj 🔄</button>
+        </div>
+        
+        <div class="completion-msg" id="completionMsg">
+            <h2>🎉 Brawo! Ułożyłaś puzzle! 🎉</h2>
+            <img src="https://konkot1.github.io/bukiet/IMG_E7466.JPG" alt="Nasze zdjęcie" class="final-image" id="finalImage">
+            <p>
+                Dlaczego to ? Nooo mało mamy wspólnych zdjęc,trzeba to naprawić.<br><br>
+                
+                PS. Tak jak te puzzle, nasze życie składa się<br>
+                z małych rzeczy, gestów, które razem tworzą<br>
+                piękną całość. ❤️<br><br>
+                
+                <strong style="color: #f5576c; font-size: 24px;">
+                    Kocham Cię! 🥰
+                </strong>
+            </p>
+            <button class="btn" onclick="resetGame()">Zagraj ponownie</button>
+        </div>
+    </div>
+    
+    <script>
+        // ✅ ZMIEŃ TO NA LINK DO SWOJEGO ZDJĘCIA
+        const imageUrl = 'https://konkot1.github.io/bukiet/IMG_E7466.JPG';
+        
+        let pieces = [];
+        let selectedPiece = null;
+        let moves = 0;
+        
+        function initPuzzle() {
+            const grid = document.getElementById('puzzleGrid');
+            grid.innerHTML = '';
+            pieces = [];
+            
+            // Utwórz 9 puzzli (3x3)
+            for(let i = 0; i < 9; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'puzzle-piece';
+                piece.dataset.index = i;
+                piece.dataset.currentPos = i;
+                
+                // Oblicz pozycję tła
+                const row = Math.floor(i / 3);
+                const col = i % 3;
+                piece.style.backgroundImage = `url(${imageUrl})`;
+                piece.style.backgroundPosition = `${col * 50}% ${row * 50}%`;
+                
+                piece.onclick = () => selectPiece(i);
+                
+                grid.appendChild(piece);
+                pieces.push(piece);
+            }
+            
+            document.getElementById('finalImage').src = imageUrl;
+        }
+        
+        function selectPiece(index) {
+            if(selectedPiece === null) {
+                selectedPiece = index;
+                pieces[index].style.border = '3px solid #f5576c';
+            } else {
+                if(selectedPiece !== index) {
+                    swapPieces(selectedPiece, index);
+                    moves++;
+                    document.getElementById('moves').textContent = `Ruchy: ${moves}`;
+                    checkWin();
+                }
+                pieces[selectedPiece].style.border = '2px solid white';
+                selectedPiece = null;
+            }
+        }
+        
+        function swapPieces(index1, index2) {
+            const temp = pieces[index1].style.backgroundPosition;
+            pieces[index1].style.backgroundPosition = pieces[index2].style.backgroundPosition;
+            pieces[index2].style.backgroundPosition = temp;
+            
+            const tempPos = pieces[index1].dataset.currentPos;
+            pieces[index1].dataset.currentPos = pieces[index2].dataset.currentPos;
+            pieces[index2].dataset.currentPos = tempPos;
+        }
+        
+        function checkWin() {
+            let won = true;
+            pieces.forEach((piece, index) => {
+                if(parseInt(piece.dataset.currentPos) !== index) {
+                    won = false;
+                } else {
+                    piece.classList.add('correct');
+                }
+            });
+            
+            if(won) {
+                setTimeout(() => {
+                    document.getElementById('gameArea').style.display = 'none';
+                    document.getElementById('completionMsg').style.display = 'block';
+                }, 500);
+            }
+        }
+        
+        function shufflePuzzle() {
+            moves = 0;
+            document.getElementById('moves').textContent = 'Ruchy: 0';
+            
+            pieces.forEach(piece => {
+                piece.classList.remove('correct');
+                piece.style.border = '2px solid white';
+            });
+            
+            // Wymieszaj 50 razy
+            for(let i = 0; i < 50; i++) {
+                const a = Math.floor(Math.random() * 9);
+                const b = Math.floor(Math.random() * 9);
+                if(a !== b) swapPieces(a, b);
+            }
+        }
+        
+        function resetGame() {
+            document.getElementById('gameArea').style.display = 'block';
+            document.getElementById('completionMsg').style.display = 'none';
+            initPuzzle();
+            shufflePuzzle();
+        }
+        
+        // Inicjalizacja
+        initPuzzle();
+        shufflePuzzle();
+    </script>
+</body>
+</html>
