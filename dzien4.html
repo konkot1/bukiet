@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tajny kod dla Ciebie 🔐</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier Prime', monospace;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: rgba(255,255,255,0.95);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #1e3c72;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .code-display {
+            background: #000;
+            color: #0f0;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            font-weight: bold;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-display::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,255,0,0.3), transparent);
+            animation: scan 2s infinite;
+        }
+        
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .hint {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: #856404;
+            text-align: center;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-family: 'Courier Prime', monospace;
+            text-align: center;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+            font-family: 'Courier Prime', monospace;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .result {
+            display: none;
+            text-align: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        .result h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        
+        .result p {
+            color: #666;
+            font-size: 18px;
+            line-height: 1.8;
+        }
+        
+        .hearts {
+            font-size: 40px;
+            margin: 20px 0;
+            animation: heartbeat 1.5s infinite;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .code-display {
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="puzzle">
+            <h1>🔐 TAJNY KOD 🔐</h1>
+            <p class="subtitle">Odszyfruj wiadomość aby zobaczyć co dla Ciebie przygotowałem...</p>
+            
+            <div class="code-display" id="codeDisplay">
+                L P D B N___D J F___O B K N P D O J F K
+            </div>
+            
+            <div class="hint">
+                💡 <strong>Wskazówka:</strong> Każda litera została przesunięta o 1 w alfabecie do przodu<br>
+                (A→B, B→C, ... Z→A)
+            </div>
+            
+            <div class="input-group">
+                <input type="text" id="answer" placeholder="Wpisz odszyfrowaną wiadomość..." autocomplete="off">
+            </div>
+            
+            <button class="btn" onclick="checkAnswer()">Sprawdź! 🔓</button>
+        </div>
+        
+        <div class="result" id="result">
+            <h2>✅ Brawo!</h2>
+            <div class="hearts">💕 ❤️ 💖</div>
+            <p style="font-size: 24px; color: #1e3c72; margin-bottom: 20px;">
+                <strong>"KOCHAM CIĘ NAJMOCNIEJ"</strong>
+            </p>
+            <p>
+                Wiedziałem, że to odszyfrujesz! 😊<br><br>
+                
+                To nie był trudny kod, bo najważniejsze rzeczy<br>
+                powinny być proste i szczere.<br><br>
+                
+                Tak jak moja miłość do Ciebie - <br>
+                <strong style="color: #1e3c72;">prosta, szczera i nieskończona.</strong><br><br>
+                
+                <span style="font-size: 28px;">❤️ KOCHAM CIĘ ❤️</span>
+            </p>
+            <button class="btn" onclick="location.reload()" style="margin-top: 30px;">
+                Spróbuj ponownie
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        
+        const correctAnswer = "kocham cie najmocniej";
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.toLowerCase().trim();
+            
+            if(input === correctAnswer) {
+                document.getElementById('puzzle').style.display = 'none';
+                document.getElementById('result').style.display = 'block';
+            } else {
+                const answerInput = document.getElementById('answer');
+                answerInput.style.borderColor = '#dc3545';
+                answerInput.value = '';
+                answerInput.placeholder = '❌ Spróbuj jeszcze raz...';
+                
+                setTimeout(() => {
+                    answerInput.style.borderColor = '#ddd';
+                    answerInput.placeholder = 'Wpisz odszyfrowaną wiadomość...';
+                }, 2000);
+            }
+        }
+        
+        // Enter key support
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+    </script>
+</body>
+</html>
